@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelai-api
+  namespace: travelai
+  labels:
+    app: travelai-api
+    version: "1.0.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: travelai-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: travelai-api
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: travelai-api
+      containers:
+        - name: travelai-api
+          image: ghcr.io/YOUR_GITHUB_USERNAME/travelai-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: travelai-config
+          env:
+            - name: TravelAI__AzureOpenAI__Endpoint
+              valueFrom:
+                secretKeyRef:
+                  name: travelai-secrets
+                  key: azure-openai-endpoint
+            - name: TravelAI__AzureOpenAI__ApiKey
+              valueFrom:
+                secretKeyRef:
+                  name: travelai-secrets
+                  key: azure-openai-key
+            - name: TravelAI__AzureSearch__Endpoint
+              valueFrom:
+                secretKeyRef:
+                  name: travelai-secrets
+                  key: azure-search-endpoint
+            - name: TravelAI__AzureSearch__ApiKey
+              valueFrom:
+                secretKeyRef:
+                  name: travelai-secrets
+                  key: azure-search-key
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            failureThreshold: 2
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000

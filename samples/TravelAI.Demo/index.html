@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TravelAI.Core — Live Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d1117;
+    --ink2: #1c2733;
+    --muted: #5a6472;
+    --subtle: #8b95a1;
+    --line: #e4e8ed;
+    --surface: #f6f8fa;
+    --white: #ffffff;
+    --accent: #0061ff;
+    --accent2: #00c896;
+    --warn: #f0a500;
+    --danger: #e8324b;
+    --tag-bg: #ebf1ff;
+    --tag-fg: #0049cc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--white);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────── */
+  header {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent2);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .nav-badges {
+    display: flex;
+    gap: 8px;
+  }
+
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.1);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .badge:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+  .badge.nuget { background: rgba(0,97,255,0.2); border-color: rgba(0,97,255,0.4); color: #7ab4ff; }
+  .badge.github { background: rgba(0,200,150,0.15); border-color: rgba(0,200,150,0.35); color: #6ee8c6; }
+
+  /* ── HERO ────────────────────────────────────────────── */
+  .hero {
+    padding: 5rem 2.5rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    color: #fff;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent2);
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .install-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .install-block:hover { background: rgba(255,255,255,0.09); }
+  .install-block .prompt { color: var(--accent2); }
+  .copy-tip {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    background: var(--accent2);
+    color: var(--ink);
+    padding: 2px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .install-block.copied .copy-tip { opacity: 1; }
+
+  /* ── TABS ────────────────────────────────────────────── */
+  .demo-area {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2.5rem 6rem;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 2rem;
+  }
+
+  .tab-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 18px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: -1px;
+  }
+
+  .tab-btn:hover { color: rgba(255,255,255,0.75); }
+  .tab-btn.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── DEMO CARDS ─────────────────────────────────────── */
+  .demo-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .demo-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 1rem;
+  }
+
+  /* ── SEARCH DEMO ────────────────────────────────────── */
+  .search-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .search-input {
+    flex: 1;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-input::placeholder { color: rgba(255,255,255,0.3); }
+  .search-input:focus { border-color: var(--accent2); }
+
+  .btn-primary {
+    background: var(--accent2);
+    color: var(--ink);
+    border: none;
+    border-radius: 7px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-primary:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── DESTINATION RESULTS ────────────────────────────── */
+  .dest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+    margin-top: 0.75rem;
+  }
+
+  .dest-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 9px;
+    padding: 1rem 1.1rem;
+    transition: border-color 0.15s, transform 0.15s;
+    cursor: pointer;
+  }
+
+  .dest-card:hover { border-color: var(--accent2); transform: translateY(-1px); }
+
+  .dest-card .dest-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+  }
+
+  .dest-card .dest-country {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 10px;
+  }
+
+  .score-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .score-bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    background: var(--accent2);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .score-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    min-width: 32px;
+  }
+
+  .dest-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 500;
+    background: rgba(0,97,255,0.2);
+    color: #7ab4ff;
+    border: 1px solid rgba(0,97,255,0.3);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  /* ── FLIGHT ANOMALY DEMO ────────────────────────────── */
+  .flight-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .flight-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(255,255,255,0.35);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .flight-table td {
+    padding: 12px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.8);
+    vertical-align: middle;
+  }
+
+  .flight-table tr:last-child td { border-bottom: none; }
+  .flight-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  .anomaly-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .anomaly-pill.deal { background: rgba(0,200,150,0.15); color: var(--accent2); border: 1px solid rgba(0,200,150,0.25); }
+  .anomaly-pill.surge { background: rgba(232,50,75,0.15); color: #f07085; border: 1px solid rgba(232,50,75,0.25); }
+  .anomaly-pill.seasonal { background: rgba(240,165,0,0.15); color: var(--warn); border: 1px solid rgba(240,165,0,0.25); }
+  .anomaly-pill.normal { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35); border: 1px solid transparent; }
+
+  .price { font-family: 'DM Mono', monospace; font-weight: 500; }
+  .price.deal { color: var(--accent2); }
+  .price.surge { color: #f07085; }
+
+  /* ── ITINERARY DEMO ─────────────────────────────────── */
+  .itin-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .itin-form label { display: block; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); margin-bottom: 4px; letter-spacing: 0.07em; text-transform: uppercase; }
+
+  .itin-output {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .itin-day {
+    margin-bottom: 1.5rem;
+  }
+
+  .itin-day:last-child { margin-bottom: 0; }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+  }
+
+  .day-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 500;
+  }
+
+  .day-theme {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .activity {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .activity-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    min-width: 40px;
+    padding-top: 2px;
+  }
+
+  .activity-name { font-size: 13px; color: rgba(255,255,255,0.75); }
+  .activity-loc { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+  .activity-type {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .type-dining { background: rgba(240,165,0,0.15); color: var(--warn); }
+  .type-attraction { background: rgba(0,97,255,0.15); color: #7ab4ff; }
+  .type-hotel { background: rgba(147,112,219,0.15); color: #c4a8f0; }
+  .type-flight { background: rgba(0,200,150,0.15); color: var(--accent2); }
+
+  /* ── ARCHITECTURE PANEL ─────────────────────────────── */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .arch-box {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+  }
+
+  .arch-box h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .arch-box ul { list-style: none; }
+  .arch-box ul li {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.6);
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .arch-box ul li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+
+  /* ── LOADING SKELETON ───────────────────────────────── */
+  .skeleton {
+    border-radius: 6px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.06) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  .empty-state {
+    text-align: center;
+    padding: 2.5rem;
+    color: rgba(255,255,255,0.25);
+    font-size: 13px;
+  }
+
+  .empty-state .icon { font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.4; }
+
+  /* ── FOOTER ─────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 1.5rem 2.5rem;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    font-family: 'DM Mono', monospace;
+  }
+
+  footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  footer a:hover { color: rgba(255,255,255,0.7); }
+
+  @media (max-width: 600px) {
+    .arch-grid, .itin-form { grid-template-columns: 1fr; }
+    .dest-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    TravelAI.Core
+  </div>
+  <div class="nav-badges">
+    <a class="badge nuget" href="https://www.nuget.org/packages/TravelAI.Core" target="_blank">NuGet ↗</a>
+    <a class="badge github" href="https://github.com/yourusername/TravelAI.Core" target="_blank">GitHub ↗</a>
+    <span class="badge">.NET 10</span>
+    <span class="badge">Azure AI</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Open Source · NuGet Package · .NET 10</div>
+  <h1>AI-powered travel<br><em>platform infrastructure</em></h1>
+  <p>
+    Drop Azure OpenAI, AI Search, and ML anomaly detection into any .NET backend
+    with clean interfaces and zero boilerplate.
+  </p>
+  <div class="install-block" onclick="copyInstall(this)">
+    <span class="prompt">$</span>
+    <span>dotnet add package TravelAI.Core</span>
+    <span class="copy-tip">Copied!</span>
+  </div>
+</div>
+
+<div class="demo-area">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('search', this)">Destination Search</button>
+    <button class="tab-btn" onclick="switchTab('anomaly', this)">Price Anomaly</button>
+    <button class="tab-btn" onclick="switchTab('itinerary', this)">Itinerary Builder</button>
+    <button class="tab-btn" onclick="switchTab('arch', this)">Architecture</button>
+  </div>
+
+  <!-- SEARCH TAB -->
+  <div class="tab-panel active" id="tab-search">
+    <div class="demo-card">
+      <h3>IDestinationSearchService — Semantic Search</h3>
+      <div class="search-row">
+        <input class="search-input" id="search-q" type="text"
+          placeholder="warm beaches with great food and history, not too touristy..."
+          value="warm Mediterranean with history and local food">
+        <button class="btn-primary" onclick="runSearch()">Search</button>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;margin-bottom:0.75rem;">
+        Try: "skiing in the Alps" · "tropical island budget under £400 flights" · "city break with museums"
+      </div>
+      <div id="search-results">
+        <div class="empty-state"><div class="icon">✦</div>Results will appear here</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANOMALY TAB -->
+  <div class="tab-panel" id="tab-anomaly">
+    <div class="demo-card">
+      <h3>IPriceAnomalyDetector — Statistical Analysis</h3>
+      <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:1rem;">
+        Z-score analysis vs historical baselines. Flags surges, unexpected deals, seasonal deviations.
+        Pluggable with Azure ML endpoints.
+      </p>
+      <table class="flight-table">
+        <thead>
+          <tr>
+            <th>Route</th>
+            <th>Cabin</th>
+            <th>Price</th>
+            <th>Baseline</th>
+            <th>Deviation</th>
+            <th>Anomaly</th>
+          </tr>
+        </thead>
+        <tbody id="anomaly-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ITINERARY TAB -->
+  <div class="tab-panel" id="tab-itinerary">
+    <div class="demo-card">
+      <h3>IItineraryGenerationService — GPT-4o Powered</h3>
+      <div class="itin-form">
+        <div>
+          <label>Destination</label>
+          <input class="search-input" id="itin-dest" value="Rome, Italy" style="width:100%">
+        </div>
+        <div>
+          <label>Traveller Preferences</label>
+          <input class="search-input" id="itin-prefs" value="food, history, architecture" style="width:100%">
+        </div>
+        <div>
+          <label>Departure</label>
+          <input class="search-input" id="itin-dep" type="date" style="width:100%">
+        </div>
+        <div>
+          <label>Return</label>
+          <input class="search-input" id="itin-ret" type="date" style="width:100%">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="generateItinerary()">Generate Itinerary</button>
+    </div>
+    <div id="itin-output" style="margin-top:1rem;"></div>
+  </div>
+
+  <!-- ARCH TAB -->
+  <div class="tab-panel" id="tab-arch">
+    <div class="demo-card">
+      <h3>Architecture Overview</h3>
+      <div class="arch-grid">
+        <div class="arch-box">
+          <h4>Interfaces</h4>
+          <ul>
+            <li>IItineraryGenerationService</li>
+            <li>IPriceAnomalyDetector</li>
+            <li>IDestinationSearchService</li>
+            <li>IBookingAutomationService</li>
+          </ul>
+        </div>
+        <div class="arch-box">
+          <h4>Azure Services</h4>
+          <ul>
+            <li>Azure OpenAI (GPT-4o)</li>
+            <li>Azure AI Search (semantic)</li>
+            <li>Azure ML (custom models)</li>
+            <li>Azure App Config</li>
+          </ul>
+        </div>
+        <div class="arch-box">
+          <h4>Domain Models</h4>
+          <ul>
+            <li>Itinerary · ItineraryDay</li>
+            <li>FlightOption · PriceAnomaly</li>
+            <li>DestinationSearchResult</li>
+            <li>BookingResult · TravellerProfile</li>
+          </ul>
+        </div>
+        <div class="arch-box">
+          <h4>CI / DevOps</h4>
+          <ul>
+            <li>GitHub Actions pipeline</li>
+            <li>NuGet auto-publish on tag</li>
+            <li>xUnit + FluentAssertions</li>
+            <li>Codecov coverage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="demo-card" style="margin-top:1rem;">
+      <h3>Quick Registration</h3>
+      <pre style="font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,0.7);line-height:1.7;overflow-x:auto;"><span style="color:#7ab4ff">builder</span><span style="color:#6ee8c6">.Services</span>
+  .AddTravelAI(<span style="color:#7ab4ff">builder</span><span style="color:#6ee8c6">.Configuration</span>);
+
+<span style="color:rgba(255,255,255,0.3)">// Then inject anywhere:</span>
+<span style="color:#c4a8f0">public class</span> <span style="color:#7ab4ff">TripController</span>(
+  <span style="color:#c4a8f0">IItineraryGenerationService</span> generator,
+  <span style="color:#c4a8f0">IPriceAnomalyDetector</span> detector,
+  <span style="color:#c4a8f0">IDestinationSearchService</span> search
+) : ControllerBase { ... }</pre>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  TravelAI.Core · MIT License ·
+  <a href="https://github.com/yourusername/TravelAI.Core">github.com/yourusername/TravelAI.Core</a>
+  · Built with .NET 10, Azure AI, GPT-4o
+</footer>
+
+<script>
+// ── Tab switching
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'anomaly' && !document.getElementById('anomaly-tbody').children.length) renderAnomalyTable();
+  if (name === 'itinerary') initDates();
+}
+
+// ── Copy install command
+function copyInstall(el) {
+  navigator.clipboard?.writeText('dotnet add package TravelAI.Core');
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 2000);
+}
+
+// ── SEMANTIC SEARCH (simulated)
+const destData = [
+  { name: 'Rome', country: 'Italy', tags: ['history', 'food', 'architecture', 'culture'], price: 285, queries: ['food', 'history', 'culture', 'mediterranean', 'architecture', 'europe', 'warm'] },
+  { name: 'Seville', country: 'Spain', tags: ['food', 'tapas', 'flamenco', 'history'], price: 175, queries: ['food', 'mediterranean', 'tapas', 'history', 'warm', 'europe'] },
+  { name: 'Athens', country: 'Greece', tags: ['history', 'ruins', 'food', 'islands'], price: 220, queries: ['history', 'ruins', 'mediterranean', 'warm', 'culture', 'food'] },
+  { name: 'Lisbon', country: 'Portugal', tags: ['food', 'culture', 'seafood', 'hills'], price: 195, queries: ['food', 'culture', 'european', 'seafood', 'warm'] },
+  { name: 'Kyoto', country: 'Japan', tags: ['culture', 'temples', 'food', 'zen'], price: 580, queries: ['culture', 'temples', 'food', 'zen', 'history', 'asia'] },
+  { name: 'Dubrovnik', country: 'Croatia', tags: ['beach', 'history', 'adriatic', 'walls'], price: 310, queries: ['beach', 'history', 'mediterranean', 'warm', 'europe'] },
+  { name: 'Chamonix', country: 'France', tags: ['skiing', 'alps', 'mountains', 'snow'], price: 280, queries: ['skiing', 'alps', 'mountains', 'snow', 'winter'] },
+  { name: 'Maldives', country: 'Maldives', tags: ['beach', 'tropical', 'luxury', 'snorkelling'], price: 1200, queries: ['beach', 'tropical', 'luxury', 'island', 'snorkelling'] },
+  { name: 'Marrakech', country: 'Morocco', tags: ['culture', 'souks', 'food', 'history'], price: 155, queries: ['culture', 'food', 'warm', 'africa', 'history', 'markets'] },
+  { name: 'Barcelona', country: 'Spain', tags: ['food', 'architecture', 'beach', 'nightlife'], price: 210, queries: ['food', 'architecture', 'beach', 'mediterranean', 'nightlife', 'warm'] },
+];
+
+function scoreQuery(q, dest) {
+  const words = q.toLowerCase().split(/\s+/);
+  let score = 0;
+  words.forEach(w => { if (dest.queries.some(k => k.includes(w) || w.includes(k))) score += 0.2; });
+  score += Math.random() * 0.15;
+  return Math.min(0.99, score);
+}
+
+function runSearch() {
+  const q = document.getElementById('search-q').value;
+  const container = document.getElementById('search-results');
+  container.innerHTML = [1,2,3,4].map(() =>
+    '<div class="skeleton" style="height:100px;border-radius:9px;margin-bottom:10px"></div>'
+  ).join('');
+
+  setTimeout(() => {
+    const scored = destData.map(d => ({...d, score: scoreQuery(q, d)}))
+      .sort((a,b) => b.score - a.score).slice(0, 6);
+
+    container.innerHTML = '<div class="dest-grid">' + scored.map(d => `
+      <div class="dest-card">
+        <div class="dest-name">${d.name}</div>
+        <div class="dest-country">${d.country} · from £${d.price}/wk</div>
+        <div class="score-bar-wrap">
+          <div class="score-bar"><div class="score-fill" style="width:${(d.score*100).toFixed(0)}%"></div></div>
+          <span class="score-val">${(d.score).toFixed(2)}</span>
+        </div>
+        <div class="dest-tags">${d.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    `).join('') + '</div>';
+  }, 700);
+}
+
+// Auto-run search on load
+setTimeout(runSearch, 300);
+
+// ── ANOMALY TABLE
+const flightData = [
+  { route: 'LHR → CDG', cabin: 'Economy', price: 89, baseline: 85, direct: true },
+  { route: 'LHR → JFK', cabin: 'Economy', price: 145, baseline: 380, direct: false },
+  { route: 'LHR → DXB', cabin: 'Business', price: 2400, baseline: 1120, direct: true },
+  { route: 'LHR → BCN', cabin: 'Economy', price: 92, baseline: 95, direct: true },
+  { route: 'LHR → LAX', cabin: 'Premium Economy', price: 680, baseline: 936, direct: true },
+  { route: 'MAN → AMS', cabin: 'Economy', price: 38, baseline: 75, direct: true },
+];
+
+function renderAnomalyTable() {
+  const tbody = document.getElementById('anomaly-tbody');
+  tbody.innerHTML = flightData.map(f => {
+    const dev = ((f.price - f.baseline) / f.baseline * 100);
+    const absDev = Math.abs(dev);
+    const isAnomaly = absDev >= 25;
+
+    let pill = '', priceClass = '';
+    if (!isAnomaly) {
+      pill = '<span class="anomaly-pill normal">—</span>';
+    } else if (dev < -25) {
+      pill = `<span class="anomaly-pill deal">↓ Deal ${absDev.toFixed(0)}%</span>`;
+      priceClass = 'deal';
+    } else if (dev > 80) {
+      pill = `<span class="anomaly-pill surge">↑ Surge ${absDev.toFixed(0)}%</span>`;
+      priceClass = 'surge';
+    } else {
+      pill = `<span class="anomaly-pill seasonal">⚠ Seasonal +${absDev.toFixed(0)}%</span>`;
+      priceClass = 'surge';
+    }
+
+    return `<tr>
+      <td>${f.route}</td>
+      <td style="color:rgba(255,255,255,0.5)">${f.cabin}</td>
+      <td class="price ${priceClass}">£${f.price}</td>
+      <td style="color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace">£${f.baseline}</td>
+      <td style="color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace">${dev > 0 ? '+' : ''}${dev.toFixed(0)}%</td>
+      <td>${pill}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── ITINERARY GENERATOR (simulated)
+function initDates() {
+  const dep = document.getElementById('itin-dep');
+  const ret = document.getElementById('itin-ret');
+  if (!dep.value) {
+    const d = new Date(); d.setDate(d.getDate() + 30);
+    dep.value = d.toISOString().split('T')[0];
+  }
+  if (!ret.value) {
+    const r = new Date(); r.setDate(r.getDate() + 37);
+    ret.value = r.toISOString().split('T')[0];
+  }
+}
+
+const sampleItinerary = {
+  title: 'Roman Holiday — Food, Ruins & Hidden Gems',
+  summary: 'A handpicked 7-day immersion into Rome\'s culinary scene and ancient history, deliberately steering clear of tourist queues.',
+  cost: 1840,
+  days: [
+    { num: 1, theme: 'Arrival & Trastevere', insight: 'Evening in Trastevere is Rome at its best — locals outnumber tourists after 8pm.', activities: [
+      { time: '15:00', name: 'Check in — Hotel Campo de\' Fiori', type: 'hotel', loc: 'Campo de\' Fiori, Rome' },
+      { time: '18:30', name: 'Evening walk through Trastevere', type: 'attraction', loc: 'Trastevere' },
+      { time: '20:00', name: 'Dinner at Da Enzo al 29', type: 'dining', loc: 'Via dei Vascellari 29' },
+    ]},
+    { num: 2, theme: 'Ancient Rome', insight: 'Book the Colosseum underground tour — the hypogeum adds £12 but is worth every penny.', activities: [
+      { time: '08:30', name: 'Colosseum & Hypogeum tour', type: 'attraction', loc: 'Via Sacra, Rome' },
+      { time: '12:00', name: 'Lunch — Roscioli Salumeria', type: 'dining', loc: 'Via dei Giubbonari 21' },
+      { time: '14:30', name: 'Roman Forum & Palatine Hill', type: 'attraction', loc: 'Via Sacra' },
+      { time: '19:30', name: 'Aperitivo at a local enoteca', type: 'dining', loc: 'Pigneto neighbourhood' },
+    ]},
+    { num: 3, theme: 'Vatican & Prati', insight: 'Entry to St Peter\'s Basilica is free — skip the paid tour and climb the dome yourself.', activities: [
+      { time: '08:00', name: 'Vatican Museums (pre-booked)', type: 'attraction', loc: 'Vatican City' },
+      { time: '12:30', name: 'Lunch in Prati', type: 'dining', loc: 'Via Cola di Rienzo' },
+      { time: '15:00', name: 'Castel Sant\'Angelo', type: 'attraction', loc: 'Lungotevere' },
+    ]},
+  ]
+};
+
+function generateItinerary() {
+  const dest = document.getElementById('itin-dest').value || 'Rome, Italy';
+  const out = document.getElementById('itin-output');
+  out.innerHTML = '<div class="demo-card"><div class="skeleton" style="height:200px;border-radius:8px"></div></div>';
+
+  setTimeout(() => {
+    const itin = sampleItinerary;
+    out.innerHTML = `
+      <div class="demo-card">
+        <h3>Generated Itinerary</h3>
+        <div style="margin-bottom:1.25rem">
+          <div style="font-family:'Instrument Serif',serif;font-size:1.25rem;margin-bottom:4px">${itin.title}</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.45);margin-bottom:8px">${itin.summary}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2)">
+            Estimated total: £${itin.cost.toLocaleString()} · AI confidence: 0.87
+          </div>
+        </div>
+        <div class="itin-output">
+          ${itin.days.map(day => `
+            <div class="itin-day">
+              <div class="day-header">
+                <span class="day-label">DAY ${day.num}</span>
+                <span class="day-theme">${day.theme}</span>
+              </div>
+              ${day.insight ? `<div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:8px;padding-left:4px;border-left:2px solid rgba(0,200,150,0.3);padding-left:8px">💡 ${day.insight}</div>` : ''}
+              ${day.activities.map(a => `
+                <div class="activity">
+                  <span class="activity-time">${a.time}</span>
+                  <div style="flex:1">
+                    <div class="activity-name">${a.name}</div>
+                    <div class="activity-loc">${a.loc}</div>
+                  </div>
+                  <span class="activity-type type-${a.type}">${a.type}</span>
+                </div>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+        <div style="margin-top:1rem;font-size:12px;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace">
+          Generated via IItineraryGenerationService → AzureOpenAIClient (GPT-4o)
+        </div>
+      </div>
+    `;
+  }, 1100);
+}
+</script>
+</body>
+</html>

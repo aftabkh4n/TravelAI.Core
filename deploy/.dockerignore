@@ -1,0 +1,11 @@
+**/.git
+**/.gitignore
+**/bin
+**/obj
+**/*.user
+**/.vs
+**/node_modules
+**/TestResults
+**/artifacts
+README.md
+.github
