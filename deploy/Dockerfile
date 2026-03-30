@@ -2,16 +2,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /repo
 
-# Copy project files first for layer caching
-COPY TravelAI.Core.sln ./
-COPY src/TravelAI.Core/TravelAI.Core.csproj              src/TravelAI.Core/
-COPY samples/TravelAI.Api/TravelAI.Api.csproj             samples/TravelAI.Api/
-COPY tests/TravelAI.Core.Tests/TravelAI.Core.Tests.csproj tests/TravelAI.Core.Tests/
+# Copy everything in one go — simpler and avoids path mismatch issues
+COPY . .
 
-RUN dotnet restore
-
-COPY src/      src/
-COPY samples/  samples/
+RUN dotnet restore TravelAI.Core.sln
 
 RUN dotnet publish samples/TravelAI.Api/TravelAI.Api.csproj \
     --configuration Release \
@@ -24,9 +18,6 @@ WORKDIR /app
 
 RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 USER appuser
-
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD curl -f http://localhost:8080/health/live || exit 1
 
 COPY --from=build /app/publish .
 
