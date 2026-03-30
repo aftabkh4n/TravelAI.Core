@@ -105,7 +105,7 @@ app.MapDelete("/api/bookings/{reference}", async (string reference, IBookingAuto
 .WithSummary("Cancel a booking and initiate refund")
 .Produces<BookingResult>();
 
-app.Run();
+
 
 record GenerateItineraryRequest(
     string TravellerName, string TravellerEmail, string Destination,
@@ -133,3 +133,6 @@ static Task WriteHealthJson(HttpContext ctx, HealthReport report)
         })
     });
 }
+
+
+app.Run();
