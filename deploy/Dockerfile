@@ -22,7 +22,7 @@ RUN dotnet publish samples/TravelAI.Api/TravelAI.Api.csproj \
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 USER appuser
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
