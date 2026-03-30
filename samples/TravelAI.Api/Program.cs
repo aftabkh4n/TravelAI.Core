@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTravelAI(builder.Configuration);
 builder.Services.AddTravelAIHealthChecks();
 builder.Services.AddOpenApi();
-builder.Services.AddCors(o => o.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
+    p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 var app = builder.Build();
 
@@ -20,7 +21,6 @@ app.UseTravelAIObservability();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
 }
 
 app.MapHealthChecks("/health/live", new HealthCheckOptions
@@ -48,7 +48,9 @@ app.MapPost("/api/itinerary/generate", async (
         DietaryRequirements = req.DietaryRequirements ?? [],
         Tier = req.Tier
     };
-    var itinerary = await generator.GenerateAsync(traveller, req.Destination, req.Departure, req.ReturnDate, req.AdditionalInstructions, ct);
+    var itinerary = await generator.GenerateAsync(
+        traveller, req.Destination, req.Departure, req.ReturnDate,
+        req.AdditionalInstructions, ct);
     return Results.Ok(itinerary);
 })
 .WithName("GenerateItinerary")
@@ -56,15 +58,21 @@ app.MapPost("/api/itinerary/generate", async (
 .Produces<Itinerary>()
 .ProducesProblem(429);
 
-app.MapPost("/api/itinerary/refine", async (RefineItineraryRequest req, IItineraryGenerationService generator, CancellationToken ct) =>
+app.MapPost("/api/itinerary/refine", async (
+    RefineItineraryRequest req,
+    IItineraryGenerationService generator,
+    CancellationToken ct) =>
     Results.Ok(await generator.RefineAsync(req.Itinerary, req.Feedback, ct)))
 .WithName("RefineItinerary")
 .WithSummary("Refine an itinerary with natural language feedback")
 .Produces<Itinerary>();
 
 app.MapGet("/api/destinations/search", async (
-    string q, int maxResults, string? from,
-    IDestinationSearchService search, CancellationToken ct) =>
+    string q,
+    int maxResults,
+    string? from,
+    IDestinationSearchService search,
+    CancellationToken ct) =>
 {
     if (string.IsNullOrWhiteSpace(q))
         return Results.BadRequest(new { error = "Query parameter 'q' is required." });
@@ -72,22 +80,33 @@ app.MapGet("/api/destinations/search", async (
     return Results.Ok(new { query = q, results, count = results.Count });
 })
 .WithName("SearchDestinations")
-.WithSummary("Semantic destination search — try 'warm Mediterranean with local food'")
+.WithSummary("Semantic destination search")
 .Produces<object>()
 .ProducesProblem(400);
 
-app.MapPost("/api/flights/analyse", async (IEnumerable<FlightOption> flights, IPriceAnomalyDetector detector, CancellationToken ct) =>
+app.MapPost("/api/flights/analyse", async (
+    IEnumerable<FlightOption> flights,
+    IPriceAnomalyDetector detector,
+    CancellationToken ct) =>
 {
     var results = new List<FlightOption>();
     await foreach (var f in detector.AnalyseBatchAsync(flights, ct))
         results.Add(f);
-    return Results.Ok(new { analysed = results.Count, anomaliesDetected = results.Count(f => f.PriceAnomaly is not null), flights = results });
+    return Results.Ok(new
+    {
+        analysed = results.Count,
+        anomaliesDetected = results.Count(f => f.PriceAnomaly is not null),
+        flights = results
+    });
 })
 .WithName("AnalyseFlightPrices")
 .WithSummary("Detect price anomalies in flight search results")
 .Produces<object>();
 
-app.MapPost("/api/bookings", async (Itinerary itinerary, IBookingAutomationService bookingService, CancellationToken ct) =>
+app.MapPost("/api/bookings", async (
+    Itinerary itinerary,
+    IBookingAutomationService bookingService,
+    CancellationToken ct) =>
 {
     var result = await bookingService.BookAsync(itinerary, ct);
     return result.Status == BookingStatus.Failed
@@ -99,23 +118,16 @@ app.MapPost("/api/bookings", async (Itinerary itinerary, IBookingAutomationServi
 .Produces<BookingResult>()
 .ProducesProblem(422);
 
-app.MapDelete("/api/bookings/{reference}", async (string reference, IBookingAutomationService bookingService, CancellationToken ct) =>
+app.MapDelete("/api/bookings/{reference}", async (
+    string reference,
+    IBookingAutomationService bookingService,
+    CancellationToken ct) =>
     Results.Ok(await bookingService.CancelAsync(reference, ct)))
 .WithName("CancelBooking")
 .WithSummary("Cancel a booking and initiate refund")
 .Produces<BookingResult>();
 
-
-
-record GenerateItineraryRequest(
-    string TravellerName, string TravellerEmail, string Destination,
-    DateOnly Departure, DateOnly ReturnDate,
-    TravelTier Tier = TravelTier.Standard,
-    IReadOnlyList<string>? Preferences = null,
-    IReadOnlyList<string>? DietaryRequirements = null,
-    string? AdditionalInstructions = null);
-
-record RefineItineraryRequest(Itinerary Itinerary, string Feedback);
+app.Run();
 
 static Task WriteHealthJson(HttpContext ctx, HealthReport report)
 {
@@ -134,5 +146,15 @@ static Task WriteHealthJson(HttpContext ctx, HealthReport report)
     });
 }
 
+record GenerateItineraryRequest(
+    string TravellerName,
+    string TravellerEmail,
+    string Destination,
+    DateOnly Departure,
+    DateOnly ReturnDate,
+    TravelTier Tier = TravelTier.Standard,
+    IReadOnlyList<string>? Preferences = null,
+    IReadOnlyList<string>? DietaryRequirements = null,
+    string? AdditionalInstructions = null);
 
-app.Run();
+record RefineItineraryRequest(Itinerary Itinerary, string Feedback);
