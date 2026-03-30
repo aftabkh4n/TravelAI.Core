@@ -37,8 +37,8 @@ public sealed class DestinationSearchService : IDestinationSearchService
             SemanticSearch = new SemanticSearchOptions
             {
                 SemanticConfigurationName = _options.SemanticConfigurationName,
-                QueryCaption = new QueryCaption(QueryCaptionType.Extractive) { HighlightEnabled = false },
-                QueryAnswer = new QueryAnswer(QueryAnswerType.Extractive) { HighlightEnabled = false }
+                QueryCaption = new QueryCaption(QueryCaptionType.Extractive),
+                QueryAnswer = new QueryAnswer(QueryAnswerType.Extractive)
             },
             Select = { "destinationId", "name", "country", "tags", "averageWeeklyPriceGbp", "description" }
         };

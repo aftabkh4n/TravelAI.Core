@@ -55,7 +55,8 @@ public sealed class AiRateLimitMiddleware(RequestDelegate next, ILogger<AiRateLi
             logger.LogWarning("Rate limit exceeded for {ClientId}", clientId);
             context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
             context.Response.Headers["Retry-After"] = "60";
-            await context.Response.WriteAsJsonAsync(new { error = "Too many AI requests. Retry after 60 seconds." });
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync("{\"error\":\"Too many AI requests. Retry after 60 seconds.\"}");
             return;
         }
 

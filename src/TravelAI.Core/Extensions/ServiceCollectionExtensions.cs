@@ -18,10 +18,10 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddTravelAI(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<ItineraryGenerationOptions>(configuration.GetSection(ItineraryGenerationOptions.SectionName));
-        services.Configure<PriceAnomalyOptions>(configuration.GetSection(PriceAnomalyOptions.SectionName));
-        services.Configure<DestinationSearchOptions>(configuration.GetSection(DestinationSearchOptions.SectionName));
-        services.Configure<BookingAutomationOptions>(configuration.GetSection(BookingAutomationOptions.SectionName));
+        services.Configure<ItineraryGenerationOptions>(o => configuration.GetSection(ItineraryGenerationOptions.SectionName).Bind(o));
+        services.Configure<PriceAnomalyOptions>(o => configuration.GetSection(PriceAnomalyOptions.SectionName).Bind(o));
+        services.Configure<DestinationSearchOptions>(o => configuration.GetSection(DestinationSearchOptions.SectionName).Bind(o));
+        services.Configure<BookingAutomationOptions>(o => configuration.GetSection(BookingAutomationOptions.SectionName).Bind(o));
 
         services.AddSingleton<AzureOpenAIClient>(sp =>
         {
