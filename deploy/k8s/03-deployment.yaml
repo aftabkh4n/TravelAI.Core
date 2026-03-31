@@ -30,7 +30,7 @@ spec:
               app: travelai-api
       containers:
         - name: travelai-api
-          image: ghcr.io/YOUR_GITHUB_USERNAME/travelai-api:latest
+          image: ghcr.io/aftabkh4n/travelai-api:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
