@@ -8,7 +8,8 @@
 
 A .NET 10 library for building AI-native travel platforms. It wraps Azure OpenAI, Azure AI Search, and AKS into clean, testable domain services — drop it into any ASP.NET Core app and you've got intelligent itinerary generation, semantic destination search, and real-time price anomaly detection out of the box.
 
-**Live API** → `http://51.11.45.147` (deployed on Azure Kubernetes Service)
+**Deployed on AKS** — running on Azure Kubernetes Service with 2 pods 
+and horizontal autoscaling (2–10 replicas).
 
 ---
 
@@ -116,6 +117,15 @@ deploy/               # Dockerfile, Kubernetes manifests, GitHub Actions CI/CD, 
 | `DELETE` | `/api/bookings/{reference}` | Cancel a booking |
 | `GET` | `/health/live` | Liveness probe |
 | `GET` | `/health/ready` | Readiness probe (checks Azure OpenAI + Search) |
+
+---
+
+## Live deployment
+
+Running on Azure Kubernetes Service with 2 pods and horizontal autoscaling.
+
+![Pods running on AKS](docs/aks-pods-running.png)
+![Health checks passing](docs/health-check-healthy.png)
 
 ---
 
