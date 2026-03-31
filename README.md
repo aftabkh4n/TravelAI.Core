@@ -1,23 +1,25 @@
 # TravelAI.Core
 
+[![CI](https://github.com/aftabkh4n/TravelAI.Core/actions/workflows/ci.yml/badge.svg)](https://github.com/aftabkh4n/TravelAI.Core/actions)
+[![Deploy](https://github.com/aftabkh4n/TravelAI.Core/actions/workflows/deploy.yml/badge.svg)](https://github.com/aftabkh4n/TravelAI.Core/actions)
 [![NuGet](https://img.shields.io/nuget/v/TravelAI.Core.svg)](https://www.nuget.org/packages/TravelAI.Core)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/TravelAI.Core.svg)](https://www.nuget.org/packages/TravelAI.Core)
-[![CI](https://github.com/yourusername/TravelAI.Core/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/TravelAI.Core/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple)](https://dotnet.microsoft.com)
 
-A **.NET 10** library for building **AI-native travel platforms**. Wraps Azure OpenAI, Azure AI Search, and Azure ML into clean, testable domain services — ready to drop into any ASP.NET Core application.
+A .NET 10 library for building AI-native travel platforms. It wraps Azure OpenAI, Azure AI Search, and AKS into clean, testable domain services — drop it into any ASP.NET Core app and you've got intelligent itinerary generation, semantic destination search, and real-time price anomaly detection out of the box.
+
+**Live API** → `http://51.11.45.147` (deployed on Azure Kubernetes Service)
 
 ---
 
-## Features
+## What it does
 
-| Service | What it does |
+| Service | Description |
 |---|---|
-| `IItineraryGenerationService` | GPT-4o powered day-by-day itinerary generation with cost estimates |
-| `IPriceAnomalyDetector` | Statistical + ML anomaly detection on flight pricing data |
-| `IDestinationSearchService` | Semantic + vector search over destinations using Azure AI Search |
-| `IBookingAutomationService` | Orchestrated booking workflows with retry and rollback |
+| `IItineraryGenerationService` | Generates day-by-day travel itineraries using GPT-4o, with cost estimates tailored to the traveller's preferences |
+| `IPriceAnomalyDetector` | Flags flight price anomalies — surges, unexpected deals, seasonal deviations — using statistical analysis against historical baselines |
+| `IDestinationSearchService` | Semantic + vector search over destinations via Azure AI Search. Understands queries like *"warm with beaches and good food, not too touristy"* |
+| `IBookingAutomationService` | Orchestrates end-to-end bookings with retry logic, partial booking handling, and automatic rollback on failure |
 
 ---
 
@@ -29,18 +31,17 @@ dotnet add package TravelAI.Core
 
 ---
 
-## Quick Start
-
-### 1. Register services
+## Quick start
 
 ```csharp
+// Program.cs
 builder.Services.AddTravelAI(builder.Configuration);
 builder.Services.AddTravelAIHealthChecks();
+app.UseTravelAIObservability();
 ```
 
-### 2. Configure
-
 ```json
+// appsettings.json
 {
   "TravelAI": {
     "AzureOpenAI": {
@@ -52,35 +53,28 @@ builder.Services.AddTravelAIHealthChecks();
       "ApiKey": "YOUR_KEY"
     },
     "ItineraryGeneration": { "DeploymentName": "gpt-4o" },
-    "PriceAnomaly": { "AnomalyThresholdPercent": 25.0 },
     "DestinationSearch": { "IndexName": "destinations" }
   }
 }
 ```
 
-### 3. Use in your API
-
 ```csharp
-public class TripController(IItineraryGenerationService generator) : ControllerBase
+// Generate a personalised itinerary
+var itinerary = await generator.GenerateAsync(
+    new TravellerProfile { Name = "Aftab", Email = "a@example.com", Tier = TravelTier.Premium },
+    destination: "Rome, Italy",
+    departure: DateOnly.Parse("2025-08-01"),
+    returnDate: DateOnly.Parse("2025-08-08"),
+    additionalInstructions: "Avoid tourist traps, focus on local food");
+
+// Semantic destination search
+var results = await search.SearchAsync("warm Mediterranean with history and local food");
+
+// Detect price anomalies in flight results
+await foreach (var flight in detector.AnalyseBatchAsync(flights))
 {
-    [HttpPost("generate")]
-    public async Task<IActionResult> Generate([FromBody] TripRequest req)
-    {
-        var traveller = new TravellerProfile
-        {
-            Name = req.Name,
-            Email = req.Email,
-            Preferences = ["food", "history", "architecture"],
-            Tier = TravelTier.Premium
-        };
-
-        var itinerary = await generator.GenerateAsync(
-            traveller, "Rome, Italy",
-            DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
-            DateOnly.FromDateTime(DateTime.Today.AddDays(37)));
-
-        return Ok(itinerary);
-    }
+    if (flight.PriceAnomaly?.Type == AnomalyType.UnexpectedDeal)
+        Console.WriteLine($"Great deal: {flight.Origin}→{flight.Destination} at £{flight.PriceGbp}");
 }
 ```
 
@@ -90,74 +84,72 @@ public class TripController(IItineraryGenerationService generator) : ControllerB
 
 ```
 TravelAI.Core
-├── Interfaces/          # IItineraryGenerationService, IPriceAnomalyDetector, ...
-├── Models/              # Itinerary, FlightOption, PriceAnomaly, BookingResult, ...
-├── Services/            # Azure AI-backed implementations
-│   ├── ItineraryGenerationService.cs
-│   ├── PriceAnomalyDetector.cs
-│   ├── DestinationSearchService.cs
-│   └── BookingAutomationService.cs
-├── Middleware/          # ObservabilityMiddleware, AiRateLimitMiddleware
-├── HealthChecks/        # AzureOpenAIHealthCheck, AzureSearchHealthCheck
-└── Extensions/          # AddTravelAI(), AddTravelAIHealthChecks(), UseTravelAIObservability()
+├── Interfaces/       # Clean contracts for all services
+├── Models/           # Domain models — Itinerary, FlightOption, PriceAnomaly, BookingResult
+├── Services/         # Azure AI-backed implementations
+├── Middleware/       # Observability (correlation IDs, structured logging) + AI rate limiting
+├── HealthChecks/     # Azure OpenAI and AI Search health probes
+└── Extensions/       # One-line DI registration
 
-samples/TravelAI.Api     # Full ASP.NET Core 10 minimal API
-tests/TravelAI.Core.Tests # Unit + integration tests (xUnit + FluentAssertions)
-deploy/                  # Dockerfile, Kubernetes manifests, GitHub Actions, scripts
+samples/TravelAI.Api  # Full ASP.NET Core 10 minimal API
+tests/                # xUnit + FluentAssertions — unit and WebApplicationFactory integration tests
+deploy/               # Dockerfile, Kubernetes manifests, GitHub Actions CI/CD, provisioning scripts
 ```
 
-**Azure services:** Azure OpenAI (GPT-4o) · Azure AI Search · Azure Kubernetes Service
+**Azure services used:**
+- Azure OpenAI (GPT-4o) — itinerary generation and natural language refinement
+- Azure AI Search — semantic + hybrid vector search
+- Azure Kubernetes Service — container orchestration with HPA (2–10 replicas)
+- Azure Container Registry — image storage
 
 ---
 
-## Health Checks
+## API endpoints
 
-```csharp
-// Exposes /health/live and /health/ready
-builder.Services.AddTravelAIHealthChecks();
-app.MapHealthChecks("/health/live", ...);
-app.MapHealthChecks("/health/ready", ...);
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/itinerary/generate` | Generate a personalised itinerary |
+| `POST` | `/api/itinerary/refine` | Refine an itinerary with natural language feedback |
+| `GET` | `/api/destinations/search?q=...` | Semantic destination search |
+| `POST` | `/api/flights/analyse` | Detect price anomalies in flight results |
+| `POST` | `/api/bookings` | Execute automated booking |
+| `DELETE` | `/api/bookings/{reference}` | Cancel a booking |
+| `GET` | `/health/live` | Liveness probe |
+| `GET` | `/health/ready` | Readiness probe (checks Azure OpenAI + Search) |
+
+---
+
+## Deployment
+
+The API is deployed to AKS via GitHub Actions. Every push to `main` builds, tests, pushes the Docker image, and deploys — with a manual approval gate before production.
+
+```bash
+# Provision all Azure resources from scratch
+bash deploy/scripts/provision-azure.sh
+
+# Push to main to trigger the pipeline
+git push origin main
 ```
 
-## Running Tests
+See [`deploy/DEPLOYMENT.md`](deploy/DEPLOYMENT.md) for the full step-by-step guide.
+
+---
+
+## Running tests
 
 ```bash
 dotnet test --configuration Release
 ```
 
-## Deploy to AKS
-
-See [`deploy/DEPLOYMENT.md`](deploy/DEPLOYMENT.md) for the full step-by-step guide.
-
-```bash
-# Provision all Azure resources
-bash deploy/scripts/provision-azure.sh
-
-# Push to main — CI/CD handles the rest
-git push origin main
-```
+Tests cover the price anomaly detector (including edge cases and cabin class multipliers), booking automation orchestration, domain model validation, and API integration tests via `WebApplicationFactory` with fake Azure service dependencies — no Azure credentials needed.
 
 ---
 
-## Roadmap
+## Tech stack
 
-- [x] Itinerary generation (GPT-4o)
-- [x] Price anomaly detection
-- [x] Semantic destination search (Azure AI Search)
-- [x] Booking automation with retry & rollback
-- [x] Observability middleware + rate limiting
-- [x] Azure health checks
-- [x] Sample ASP.NET Core 10 minimal API
-- [x] AKS deployment with GitHub Actions CI/CD
-- [ ] Streaming itinerary generation (SSE)
-- [ ] Redis cache layer
-- [ ] Hotel availability (Amadeus / Travelport)
+`.NET 10` · `Azure OpenAI` · `Azure AI Search` · `AKS` · `Helm` · `Docker` · `GitHub Actions` · `xUnit` · `FluentAssertions`
 
 ---
-
-## Tech Stack
-
-`.NET 10` · `Azure OpenAI` · `Azure AI Search` · `AKS` · `Helm` · `GitHub Actions` · `xUnit` · `FluentAssertions`
 
 ## License
 

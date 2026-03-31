@@ -77,6 +77,7 @@ jobs:
         with:
           context: .
           file: ./deploy/Dockerfile
+          platforms: linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -138,7 +139,7 @@ jobs:
         run: |
           kubectl rollout status deployment/travelai-api \
             --namespace ${{ env.K8S_NAMESPACE }} \
-            --timeout=5m
+            --timeout=10m
 
       - name: Verify pods healthy
         run: |
