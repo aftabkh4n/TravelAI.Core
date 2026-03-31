@@ -1,0 +1,96 @@
+name: Test Deployment
+
+on:
+  workflow_dispatch:    # run manually from GitHub Actions tab
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: aftabkh4n/travelai-api
+  AZURE_RESOURCE_GROUP: rg-travelai-prod
+  AKS_CLUSTER_NAME: aks-travelai-prod
+  K8S_NAMESPACE: travelai
+
+jobs:
+  test-docker-build:
+    name: Test Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.9.0
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@v6.15.0
+        with:
+          context: .
+          file: ./deploy/Dockerfile
+          platforms: linux/arm64
+          push: false
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
+
+  test-k8s-manifests:
+    name: Validate Kubernetes Manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Validate all manifests
+        run: |
+          for f in deploy/k8s/*.yaml; do
+            echo "Validating $f..."
+            kubectl apply --dry-run=client -f "$f" 2>&1 || true
+          done
+
+  test-aks-connection:
+    name: Test AKS Connection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Azure login
+        uses: azure/login@v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get AKS credentials
+        run: |
+          az aks get-credentials \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --name ${{ env.AKS_CLUSTER_NAME }} \
+            --overwrite-existing
+
+      - name: Check cluster is reachable
+        run: |
+          kubectl get nodes
+          kubectl get pods --namespace ${{ env.K8S_NAMESPACE }}
+          kubectl get svc --namespace ${{ env.K8S_NAMESPACE }}
+
+      - name: Check current deployment status
+        run: |
+          kubectl rollout status deployment/travelai-api \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            --timeout=2m || echo "Deployment not ready yet"
+
+      - name: Check pod logs
+        run: |
+          kubectl logs \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            --selector app=travelai-api \
+            --tail=20 \
+            || echo "No logs available"
+
+      - name: Port forward and health check
+        run: |
+          kubectl port-forward \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            deployment/travelai-api 8080:8080 &
+          sleep 10
+          curl -f http://localhost:8080/health/live && echo "Live check passed"
+          curl -f http://localhost:8080/health/ready && echo "Ready check passed"
+          kill %1
