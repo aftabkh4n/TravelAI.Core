@@ -1,0 +1,576 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "TravelAI.Api/1.0.0": {
+        "dependencies": {
+          "MassTransit.RabbitMQ": "8.3.6",
+          "Microsoft.AspNetCore.OpenApi": "10.0.5",
+          "OpenTelemetry.Exporter.Console": "1.15.2",
+          "OpenTelemetry.Extensions.Hosting": "1.15.2",
+          "OpenTelemetry.Instrumentation.AspNetCore": "1.15.1",
+          "Scalar.AspNetCore": "2.13.22",
+          "Serilog.AspNetCore": "10.0.0",
+          "Serilog.Sinks.Console": "6.1.1",
+          "TravelAI.Core": "1.0.0"
+        },
+        "runtime": {
+          "TravelAI.Api.dll": {}
+        }
+      },
+      "Azure.AI.OpenAI/2.1.0": {
+        "dependencies": {
+          "Azure.Core": "1.49.0",
+          "OpenAI": "2.1.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Azure.AI.OpenAI.dll": {
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.100.24.60605"
+          }
+        }
+      },
+      "Azure.Core/1.49.0": {
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
+          "System.ClientModel": "1.7.0",
+          "System.Memory.Data": "8.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/Azure.Core.dll": {
+            "assemblyVersion": "1.49.0.0",
+            "fileVersion": "1.4900.25.47211"
+          }
+        }
+      },
+      "Azure.Search.Documents/11.7.0": {
+        "dependencies": {
+          "Azure.Core": "1.49.0"
+        },
+        "runtime": {
+          "lib/net8.0/Azure.Search.Documents.dll": {
+            "assemblyVersion": "11.7.0.0",
+            "fileVersion": "11.700.25.50904"
+          }
+        }
+      },
+      "MassTransit/8.3.6": {
+        "dependencies": {
+          "MassTransit.Abstractions": "8.3.6"
+        },
+        "runtime": {
+          "lib/net9.0/MassTransit.dll": {
+            "assemblyVersion": "8.3.6.0",
+            "fileVersion": "8.3.6.0"
+          }
+        }
+      },
+      "MassTransit.Abstractions/8.3.6": {
+        "runtime": {
+          "lib/net9.0/MassTransit.Abstractions.dll": {
+            "assemblyVersion": "8.3.6.0",
+            "fileVersion": "8.3.6.0"
+          }
+        }
+      },
+      "MassTransit.RabbitMQ/8.3.6": {
+        "dependencies": {
+          "MassTransit": "8.3.6",
+          "RabbitMQ.Client": "7.0.0"
+        },
+        "runtime": {
+          "lib/net9.0/MassTransit.RabbitMqTransport.dll": {
+            "assemblyVersion": "8.3.6.0",
+            "fileVersion": "8.3.6.0"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.OpenApi/10.0.5": {
+        "dependencies": {
+          "Microsoft.OpenApi": "2.0.0"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "assemblyVersion": "10.0.5.0",
+            "fileVersion": "10.0.526.15411"
+          }
+        }
+      },
+      "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyModel/10.0.0": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.DependencyModel.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.OpenApi/2.0.0": {
+        "runtime": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        }
+      },
+      "OpenAI/2.1.0": {
+        "dependencies": {
+          "System.ClientModel": "1.7.0"
+        },
+        "runtime": {
+          "lib/net6.0/OpenAI.dll": {
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.1.0.0"
+          }
+        }
+      },
+      "OpenTelemetry/1.15.2": {
+        "dependencies": {
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.15.2"
+        },
+        "runtime": {
+          "lib/net10.0/OpenTelemetry.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.15.2.2002"
+          }
+        }
+      },
+      "OpenTelemetry.Api/1.15.2": {
+        "runtime": {
+          "lib/net10.0/OpenTelemetry.Api.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.15.2.2002"
+          }
+        }
+      },
+      "OpenTelemetry.Api.ProviderBuilderExtensions/1.15.2": {
+        "dependencies": {
+          "OpenTelemetry.Api": "1.15.2"
+        },
+        "runtime": {
+          "lib/net10.0/OpenTelemetry.Api.ProviderBuilderExtensions.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.15.2.2002"
+          }
+        }
+      },
+      "OpenTelemetry.Exporter.Console/1.15.2": {
+        "dependencies": {
+          "OpenTelemetry": "1.15.2"
+        },
+        "runtime": {
+          "lib/net10.0/OpenTelemetry.Exporter.Console.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.15.2.2002"
+          }
+        }
+      },
+      "OpenTelemetry.Extensions.Hosting/1.15.2": {
+        "dependencies": {
+          "OpenTelemetry": "1.15.2"
+        },
+        "runtime": {
+          "lib/net10.0/OpenTelemetry.Extensions.Hosting.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.15.2.2002"
+          }
+        }
+      },
+      "OpenTelemetry.Instrumentation.AspNetCore/1.15.1": {
+        "dependencies": {
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.15.2"
+        },
+        "runtime": {
+          "lib/net10.0/OpenTelemetry.Instrumentation.AspNetCore.dll": {
+            "assemblyVersion": "1.15.1.965",
+            "fileVersion": "1.15.1.965"
+          }
+        }
+      },
+      "RabbitMQ.Client/7.0.0": {
+        "runtime": {
+          "lib/net8.0/RabbitMQ.Client.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Scalar.AspNetCore/2.13.22": {
+        "runtime": {
+          "lib/net10.0/Scalar.AspNetCore.dll": {
+            "assemblyVersion": "2.13.22.0",
+            "fileVersion": "2.13.22.0"
+          }
+        }
+      },
+      "Serilog/4.3.0": {
+        "runtime": {
+          "lib/net9.0/Serilog.dll": {
+            "assemblyVersion": "4.3.0.0",
+            "fileVersion": "4.3.0.0"
+          }
+        }
+      },
+      "Serilog.AspNetCore/10.0.0": {
+        "dependencies": {
+          "Serilog": "4.3.0",
+          "Serilog.Extensions.Hosting": "10.0.0",
+          "Serilog.Formatting.Compact": "3.0.0",
+          "Serilog.Settings.Configuration": "10.0.0",
+          "Serilog.Sinks.Console": "6.1.1",
+          "Serilog.Sinks.Debug": "3.0.0",
+          "Serilog.Sinks.File": "7.0.0"
+        },
+        "runtime": {
+          "lib/net10.0/Serilog.AspNetCore.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.0.0"
+          }
+        }
+      },
+      "Serilog.Extensions.Hosting/10.0.0": {
+        "dependencies": {
+          "Serilog": "4.3.0",
+          "Serilog.Extensions.Logging": "10.0.0"
+        },
+        "runtime": {
+          "lib/net10.0/Serilog.Extensions.Hosting.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.0.0"
+          }
+        }
+      },
+      "Serilog.Extensions.Logging/10.0.0": {
+        "dependencies": {
+          "Serilog": "4.3.0"
+        },
+        "runtime": {
+          "lib/net10.0/Serilog.Extensions.Logging.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.0.0"
+          }
+        }
+      },
+      "Serilog.Formatting.Compact/3.0.0": {
+        "dependencies": {
+          "Serilog": "4.3.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Formatting.Compact.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        }
+      },
+      "Serilog.Settings.Configuration/10.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyModel": "10.0.0",
+          "Serilog": "4.3.0"
+        },
+        "runtime": {
+          "lib/net10.0/Serilog.Settings.Configuration.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.0.0"
+          }
+        }
+      },
+      "Serilog.Sinks.Console/6.1.1": {
+        "dependencies": {
+          "Serilog": "4.3.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Sinks.Console.dll": {
+            "assemblyVersion": "6.1.1.0",
+            "fileVersion": "6.1.1.0"
+          }
+        }
+      },
+      "Serilog.Sinks.Debug/3.0.0": {
+        "dependencies": {
+          "Serilog": "4.3.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Sinks.Debug.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        }
+      },
+      "Serilog.Sinks.File/7.0.0": {
+        "dependencies": {
+          "Serilog": "4.3.0"
+        },
+        "runtime": {
+          "lib/net9.0/Serilog.Sinks.File.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "System.ClientModel/1.7.0": {
+        "dependencies": {
+          "System.Memory.Data": "8.0.1"
+        },
+        "runtime": {
+          "lib/net9.0/System.ClientModel.dll": {
+            "assemblyVersion": "1.7.0.0",
+            "fileVersion": "1.700.25.47207"
+          }
+        }
+      },
+      "System.Memory.Data/8.0.1": {
+        "runtime": {
+          "lib/net8.0/System.Memory.Data.dll": {
+            "assemblyVersion": "8.0.0.1",
+            "fileVersion": "8.0.1024.46610"
+          }
+        }
+      },
+      "TravelAI.Core/1.0.0": {
+        "dependencies": {
+          "Azure.AI.OpenAI": "2.1.0",
+          "Azure.Search.Documents": "11.7.0"
+        },
+        "runtime": {
+          "TravelAI.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TravelAI.Api/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Azure.AI.OpenAI/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-doixr3tcsIcdzbzF9NxKt+6U0NKj6aPeOCPYONPsWjyf3gxVndVJAdjPcVdqeR/3vcRHXRgGnGlv+iXx5jMA4g==",
+      "path": "azure.ai.openai/2.1.0",
+      "hashPath": "azure.ai.openai.2.1.0.nupkg.sha512"
+    },
+    "Azure.Core/1.49.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wmY5VEEVTBJN+8KVB6qSVZYDCMpHs1UXooOijx/NH7OsMtK92NlxhPBpPyh4cR+07R/zyDGvA5+Fss4TpwlO+g==",
+      "path": "azure.core/1.49.0",
+      "hashPath": "azure.core.1.49.0.nupkg.sha512"
+    },
+    "Azure.Search.Documents/11.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-48yBLnsf8SSgowe/OQDCNg9+G9WjzRmLX6Bghjlshxu+5Mhh4maTXvSWKi4o568ZqV6GoOYhiKPbCm/QYoufwA==",
+      "path": "azure.search.documents/11.7.0",
+      "hashPath": "azure.search.documents.11.7.0.nupkg.sha512"
+    },
+    "MassTransit/8.3.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iQQ02dUJuWlpNai3eDN7WmnstvmB2LAD8YN1i8OFT5BaNpGYYg3v0US3S6f1Zz7us+NnGHm6csg25Ak3z0H7Xg==",
+      "path": "masstransit/8.3.6",
+      "hashPath": "masstransit.8.3.6.nupkg.sha512"
+    },
+    "MassTransit.Abstractions/8.3.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-F3R3EFPvUvpsiebnijmpvZ4IhSEcqkEJdrhlFuTOjzIUnMRYBgki/oDfFWj57Ki4b9yq0nilt4Q5bk11pC4ygg==",
+      "path": "masstransit.abstractions/8.3.6",
+      "hashPath": "masstransit.abstractions.8.3.6.nupkg.sha512"
+    },
+    "MassTransit.RabbitMQ/8.3.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gR67/f8reudNVUf0yDdUBuDLBFjDdqCSF8K3XaIlpHSRmmCUTBVPVrt0h65/Zty00okBHzcbUX32bLZeQL51sw==",
+      "path": "masstransit.rabbitmq/8.3.6",
+      "hashPath": "masstransit.rabbitmq.8.3.6.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.OpenApi/10.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vTcxIfOPyfFbYk1g8YcXJfkMnlEWVkSnnjxcZLy60zgwiHMRf2SnZR+9E4HlpwKxgE3yfKMOti8J6WfKuKsw6w==",
+      "path": "microsoft.aspnetcore.openapi/10.0.5",
+      "hashPath": "microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512"
+    },
+    "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3WA9q9yVqJp222P3x1wYIGDAkpjAku0TMUaaQV22g6L67AI0LdOIrVS7Ht2vJfLHGSPVuqN94vIr15qn+HEkHw==",
+      "path": "microsoft.bcl.asyncinterfaces/8.0.0",
+      "hashPath": "microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyModel/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RFYJR7APio/BiqdQunRq6DB+nDB6nc2qhHr77mlvZ0q0BT8PubMXN7XicmfzCbrDE/dzhBnUKBRXLTcqUiZDGg==",
+      "path": "microsoft.extensions.dependencymodel/10.0.0",
+      "hashPath": "microsoft.extensions.dependencymodel.10.0.0.nupkg.sha512"
+    },
+    "Microsoft.OpenApi/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GGYLfzV/G/ct80OZ45JxnWP7NvMX1BCugn/lX7TH5o0lcVaviavsLMTxmFV2AybXWjbi3h6FF1vgZiTK6PXndw==",
+      "path": "microsoft.openapi/2.0.0",
+      "hashPath": "microsoft.openapi.2.0.0.nupkg.sha512"
+    },
+    "OpenAI/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zl72nyP4O94ZyEoCLoE8qoc5vp8kSJmRuqR+UdK+jNIjFJGWJYjsb4rAGpMWWRTbPYuk82E8myMJdVQurMLDnQ==",
+      "path": "openai/2.1.0",
+      "hashPath": "openai.2.1.0.nupkg.sha512"
+    },
+    "OpenTelemetry/1.15.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XwXZR69HnMBwwzvVg6ONRoPl5jeSFJkqOftHLcbSvl9DG6vY1j0OJut3cHu9Vmc5r2zgEDIQclAqpDtbhPNQZA==",
+      "path": "opentelemetry/1.15.2",
+      "hashPath": "opentelemetry.1.15.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Api/1.15.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7zeBVUVhVyVjzOUvEj8o+NkpEOKq77zjxH8akZBlN9LjuaSPUW/yV4EJrs393wxSLWC4eun1qwTN9NY21k5ixQ==",
+      "path": "opentelemetry.api/1.15.2",
+      "hashPath": "opentelemetry.api.1.15.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Api.ProviderBuilderExtensions/1.15.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+UIz3GpBUrapW5IRnvPGdvVhhvW686lbIcNo/7ENOjB++djsdEsFxILTFYJ673cU0l8Da/OtV+IcE49OKJUM5w==",
+      "path": "opentelemetry.api.providerbuilderextensions/1.15.2",
+      "hashPath": "opentelemetry.api.providerbuilderextensions.1.15.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Exporter.Console/1.15.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-25RBbplOlkSHyKF9qVAA5DhGm47v0ghI++75ZgrUqOQKoEJ5GLOww77q625Z0WEZoJE7XyrCRBXIE7ggKoH41g==",
+      "path": "opentelemetry.exporter.console/1.15.2",
+      "hashPath": "opentelemetry.exporter.console.1.15.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Extensions.Hosting/1.15.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-T2nEP/lABOab8w8espx5biYGghw8errNlhhMLYmoXEhGT6EGB4CNhZInJPC+tOvlGUGFe54NM3TdSATxebwJ8g==",
+      "path": "opentelemetry.extensions.hosting/1.15.2",
+      "hashPath": "opentelemetry.extensions.hosting.1.15.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Instrumentation.AspNetCore/1.15.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wXaZTu6LHY8xcbRd6ClcrtjHqGVoGYCcArXEZA3iUjUcYSVYwDGyPU0PdkwTfylxv8JeCCVDQhVb0fT7xBJjGA==",
+      "path": "opentelemetry.instrumentation.aspnetcore/1.15.1",
+      "hashPath": "opentelemetry.instrumentation.aspnetcore.1.15.1.nupkg.sha512"
+    },
+    "RabbitMQ.Client/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8YJz22mOSMtkbIVuVSz2HbJwbpKwRoXQ1uqbczDUt1w1Ds8dxFs6dkV/oZ8AlTmkErZjtQelHv+oBu52ud00WA==",
+      "path": "rabbitmq.client/7.0.0",
+      "hashPath": "rabbitmq.client.7.0.0.nupkg.sha512"
+    },
+    "Scalar.AspNetCore/2.13.22": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MN267boY7T3AEHW1mTFDpg4KHF/oiKbox7ue5Orz6/2OeqZHYF1ZQcjBHXGSwxN+lyGSYGL9/i0IRorCYyqw3Q==",
+      "path": "scalar.aspnetcore/2.13.22",
+      "hashPath": "scalar.aspnetcore.2.13.22.nupkg.sha512"
+    },
+    "Serilog/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+cDryFR0GRhsGOnZSKwaDzRRl4MupvJ42FhCE4zhQRVanX0Jpg6WuCBk59OVhVDPmab1bB+nRykAnykYELA9qQ==",
+      "path": "serilog/4.3.0",
+      "hashPath": "serilog.4.3.0.nupkg.sha512"
+    },
+    "Serilog.AspNetCore/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-a/cNa1mY4On1oJlfGG1wAvxjp5g7OEzk/Jf/nm7NF9cWoE7KlZw1GldrifUBWm9oKibHkR7Lg/l5jy3y7ACR8w==",
+      "path": "serilog.aspnetcore/10.0.0",
+      "hashPath": "serilog.aspnetcore.10.0.0.nupkg.sha512"
+    },
+    "Serilog.Extensions.Hosting/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-E7juuIc+gzoGxgzFooFgAV8g9BfiSXNKsUok9NmEpyAXg2odkcPsMa/Yo4axkJRlh0se7mkYQ1GXDaBemR+b6w==",
+      "path": "serilog.extensions.hosting/10.0.0",
+      "hashPath": "serilog.extensions.hosting.10.0.0.nupkg.sha512"
+    },
+    "Serilog.Extensions.Logging/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vx0kABKl2dWbBhhqAfTOk53/i8aV/5VaT3a6il9gn72Wqs2pM7EK2OB6No6xdqK2IaY6Zf9gdjLuK9BVa2rT+Q==",
+      "path": "serilog.extensions.logging/10.0.0",
+      "hashPath": "serilog.extensions.logging.10.0.0.nupkg.sha512"
+    },
+    "Serilog.Formatting.Compact/3.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wQsv14w9cqlfB5FX2MZpNsTawckN4a8dryuNGbebB/3Nh1pXnROHZov3swtu3Nj5oNG7Ba+xdu7Et/ulAUPanQ==",
+      "path": "serilog.formatting.compact/3.0.0",
+      "hashPath": "serilog.formatting.compact.3.0.0.nupkg.sha512"
+    },
+    "Serilog.Settings.Configuration/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LNq+ibS1sbhTqPV1FIE69/9AJJbfaOhnaqkzcjFy95o+4U+STsta9mi97f1smgXsWYKICDeGUf8xUGzd/52/uA==",
+      "path": "serilog.settings.configuration/10.0.0",
+      "hashPath": "serilog.settings.configuration.10.0.0.nupkg.sha512"
+    },
+    "Serilog.Sinks.Console/6.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8jbqgjUyZlfCuSTaJk6lOca465OndqOz3KZP6Cryt/IqZYybyBu7GP0fE/AXBzrrQB3EBmQntBFAvMVz1COvAA==",
+      "path": "serilog.sinks.console/6.1.1",
+      "hashPath": "serilog.sinks.console.6.1.1.nupkg.sha512"
+    },
+    "Serilog.Sinks.Debug/3.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4BzXcdrgRX7wde9PmHuYd9U6YqycCC28hhpKonK7hx0wb19eiuRj16fPcPSVp0o/Y1ipJuNLYQ00R3q2Zs8FDA==",
+      "path": "serilog.sinks.debug/3.0.0",
+      "hashPath": "serilog.sinks.debug.3.0.0.nupkg.sha512"
+    },
+    "Serilog.Sinks.File/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fKL7mXv7qaiNBUC71ssvn/dU0k9t0o45+qm2XgKAlSt19xF+ijjxyA3R6HmCgfKEKwfcfkwWjayuQtRueZFkYw==",
+      "path": "serilog.sinks.file/7.0.0",
+      "hashPath": "serilog.sinks.file.7.0.0.nupkg.sha512"
+    },
+    "System.ClientModel/1.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NKKA3/O6B7PxmtIzOifExHdfoWthy3AD4EZ1JfzcZU8yGZTbYrK1qvXsHUL/1yQKKqWSKgIR1Ih/yf2gOaHc4w==",
+      "path": "system.clientmodel/1.7.0",
+      "hashPath": "system.clientmodel.1.7.0.nupkg.sha512"
+    },
+    "System.Memory.Data/8.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BVYuec3jV23EMRDeR7Dr1/qhx7369dZzJ9IWy2xylvb4YfXsrUxspWc4UWYid/tj4zZK58uGZqn2WQiaDMhmAg==",
+      "path": "system.memory.data/8.0.1",
+      "hashPath": "system.memory.data.8.0.1.nupkg.sha512"
+    },
+    "TravelAI.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
