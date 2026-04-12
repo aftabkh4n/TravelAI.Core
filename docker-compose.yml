@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: travelai-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  travelai-api:
+    build:
+      context: .
+      dockerfile: samples/TravelAI.Api/Dockerfile
+    container_name: travelai-api
+    ports:
+      - "5000:8080"
+    environment:
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  search-worker:
+    build:
+      context: .
+      dockerfile: src/TravelAI.SearchWorker/Dockerfile
+    container_name: travelai-search-worker
+    environment:
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  ai-worker:
+    build:
+      context: .
+      dockerfile: src/TravelAI.AiWorker/Dockerfile
+    container_name: travelai-ai-worker
+    environment:
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
