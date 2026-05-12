@@ -11,3 +11,16 @@ C:\Users\Administrator\Downloads\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\o
 C:\Users\Administrator\Downloads\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\refint\TravelAI.Core.dll
 C:\Users\Administrator\Downloads\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.pdb
 C:\Users\Administrator\Downloads\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\ref\TravelAI.Core.dll
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.csproj.AssemblyReference.cache
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.AssemblyInfoInputs.cache
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.AssemblyInfo.cs
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.csproj.CoreCompileInputs.cache
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.sourcelink.json
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.dll
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\refint\TravelAI.Core.dll
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.pdb
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\bin\Debug\net10.0\TravelAI.Core.deps.json
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\bin\Debug\net10.0\TravelAI.Core.dll
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\bin\Debug\net10.0\TravelAI.Core.pdb
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\ref\TravelAI.Core.dll

@@ -4,9 +4,12 @@ using Azure.Search.Documents;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using TravelAI.Core.HealthChecks;
 using TravelAI.Core.Interfaces;
 using TravelAI.Core.Middleware;
+using TravelAI.Core.Providers;
 using TravelAI.Core.Services;
 
 namespace TravelAI.Core.Extensions;
@@ -14,7 +17,8 @@ namespace TravelAI.Core.Extensions;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers all TravelAI.Core services. Call in Program.cs: builder.Services.AddTravelAI(builder.Configuration);
+    /// Registers all TravelAI.Core services using IConfiguration (Azure OpenAI + Azure AI Search).
+    /// Call in Program.cs: builder.Services.AddTravelAI(builder.Configuration);
     /// </summary>
     public static IServiceCollection AddTravelAI(this IServiceCollection services, IConfiguration configuration)
     {
@@ -34,14 +38,85 @@ public static class ServiceCollectionExtensions
         {
             var endpoint = configuration["TravelAI:AzureSearch:Endpoint"] ?? throw new InvalidOperationException("TravelAI:AzureSearch:Endpoint is required");
             var key = configuration["TravelAI:AzureSearch:ApiKey"] ?? throw new InvalidOperationException("TravelAI:AzureSearch:ApiKey is required");
-            var opts = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<DestinationSearchOptions>>();
+            var opts = sp.GetRequiredService<IOptions<DestinationSearchOptions>>();
             return new SearchClient(new Uri(endpoint), opts.Value.IndexName, new AzureKeyCredential(key));
+        });
+
+        services.AddScoped<ILlmProvider>(sp =>
+        {
+            var azureClient = sp.GetRequiredService<AzureOpenAIClient>();
+            var deploymentName = sp.GetRequiredService<IOptions<ItineraryGenerationOptions>>().Value.DeploymentName;
+            var logger = sp.GetRequiredService<ILogger<AzureOpenAIProvider>>();
+            return new AzureOpenAIProvider(azureClient, deploymentName, logger);
         });
 
         services.AddScoped<IItineraryGenerationService, ItineraryGenerationService>();
         services.AddScoped<IPriceAnomalyDetector, PriceAnomalyDetector>();
         services.AddScoped<IDestinationSearchService, DestinationSearchService>();
         services.AddScoped<IBookingAutomationService, BookingAutomationService>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Registers TravelAI.Core services using fluent provider configuration.
+    /// Example: builder.Services.AddTravelAI(o => o.UseMock());
+    /// </summary>
+    public static IServiceCollection AddTravelAI(this IServiceCollection services, Action<TravelAIOptions> configure)
+    {
+        var travelOptions = new TravelAIOptions();
+        configure(travelOptions);
+
+        services.Configure<PriceAnomalyOptions>(_ => { });
+        services.Configure<BookingAutomationOptions>(_ => { });
+
+        switch (travelOptions.ProviderType)
+        {
+            case ProviderType.AzureOpenAI:
+                services.AddSingleton(new AzureOpenAIClient(
+                    new Uri(travelOptions.AzureEndpoint!),
+                    new AzureKeyCredential(travelOptions.AzureKey!)));
+                services.AddScoped<ILlmProvider>(sp => new AzureOpenAIProvider(
+                    sp.GetRequiredService<AzureOpenAIClient>(),
+                    travelOptions.AzureDeployment!,
+                    sp.GetRequiredService<ILogger<AzureOpenAIProvider>>()));
+                break;
+
+            case ProviderType.OpenAI:
+                services.AddScoped<ILlmProvider>(sp => new OpenAIProvider(
+                    travelOptions.OpenAIApiKey!,
+                    travelOptions.OpenAIModel!,
+                    sp.GetRequiredService<ILogger<OpenAIProvider>>()));
+                break;
+
+            case ProviderType.Anthropic:
+                services.AddScoped<ILlmProvider>(sp => new AnthropicProvider(
+                    travelOptions.AnthropicApiKey!,
+                    travelOptions.AnthropicModel!,
+                    sp.GetRequiredService<ILogger<AnthropicProvider>>()));
+                break;
+
+            case ProviderType.Ollama:
+                services.AddHttpClient();
+                services.AddScoped<ILlmProvider>(sp => new OllamaProvider(
+                    sp.GetRequiredService<IHttpClientFactory>(),
+                    travelOptions.OllamaBaseUrl!,
+                    travelOptions.OllamaModel!,
+                    sp.GetRequiredService<ILogger<OllamaProvider>>()));
+                break;
+
+            case ProviderType.Mock:
+                services.AddScoped<ILlmProvider, MockProvider>();
+                services.AddScoped<IDestinationSearchService, MockDestinationSearchService>();
+                services.AddScoped<IBookingAutomationService, MockBookingAutomationService>();
+                break;
+        }
+
+        services.AddScoped<IItineraryGenerationService, ItineraryGenerationService>();
+        services.AddScoped<IPriceAnomalyDetector, PriceAnomalyDetector>();
+
+        if (travelOptions.ProviderType != ProviderType.Mock)
+            services.AddScoped<IBookingAutomationService, BookingAutomationService>();
 
         return services;
     }

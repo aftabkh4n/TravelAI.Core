@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TravelAI.Core.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b701ac1e4e68bd37d9402e335215deb67bd30da4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9ba45b7e6c4375ceda3d99d457c01696f82d6c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("TravelAI.Core.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TravelAI.Core.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

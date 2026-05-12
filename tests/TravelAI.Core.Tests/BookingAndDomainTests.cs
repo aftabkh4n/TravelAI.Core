@@ -24,7 +24,6 @@ public sealed class BookingAutomationServiceTests
         });
 
         _sut = new BookingAutomationService(
-            new FakeItineraryGenerationService(),
             options,
             NullLogger<BookingAutomationService>.Instance);
     }

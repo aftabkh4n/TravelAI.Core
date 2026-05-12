@@ -1,27 +1,20 @@
 using System.Text;
 using System.Text.Json;
-using Azure.AI.OpenAI;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using OpenAI.Chat;
 using TravelAI.Core.Interfaces;
 using TravelAI.Core.Models;
+using TravelAI.Core.Providers;
 
 namespace TravelAI.Core.Services;
 
 public sealed class ItineraryGenerationService : IItineraryGenerationService
 {
-    private readonly AzureOpenAIClient _client;
-    private readonly ItineraryGenerationOptions _options;
+    private readonly ILlmProvider _provider;
     private readonly ILogger<ItineraryGenerationService> _logger;
 
-    public ItineraryGenerationService(
-        AzureOpenAIClient client,
-        IOptions<ItineraryGenerationOptions> options,
-        ILogger<ItineraryGenerationService> logger)
+    public ItineraryGenerationService(ILlmProvider provider, ILogger<ItineraryGenerationService> logger)
     {
-        _client = client;
-        _options = options.Value;
+        _provider = provider;
         _logger = logger;
     }
 
@@ -36,36 +29,22 @@ public sealed class ItineraryGenerationService : IItineraryGenerationService
         var duration = returnDate.DayNumber - departure.DayNumber;
         _logger.LogInformation("Generating {Duration}-day itinerary for {Traveller} to {Destination}", duration, traveller.Name, destination);
 
-        var chatClient = _client.GetChatClient(_options.DeploymentName);
-        var response = await chatClient.CompleteChatAsync(
-            [
-                new SystemChatMessage(BuildSystemPrompt(traveller)),
-                new UserChatMessage(BuildUserPrompt(traveller, destination, departure, returnDate, duration, additionalInstructions))
-            ],
-            new ChatCompletionOptions
-            {
-                Temperature = 0.7f,
-                MaxOutputTokenCount = 4096,
-                ResponseFormat = ChatResponseFormat.CreateJsonObjectFormat()
-            },
+        var json = await _provider.GenerateAsync(
+            BuildSystemPrompt(traveller),
+            BuildUserPrompt(traveller, destination, departure, returnDate, duration, additionalInstructions),
             cancellationToken);
 
-        return ParseItineraryResponse(response.Value.Content[0].Text, traveller, destination, departure, returnDate);
+        return ParseItineraryResponse(json, traveller, destination, departure, returnDate);
     }
 
     public async Task<Itinerary> RefineAsync(Itinerary existing, string feedback, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Refining itinerary {Id}", existing.Id);
-        var chatClient = _client.GetChatClient(_options.DeploymentName);
-        var response = await chatClient.CompleteChatAsync(
-            [
-                new SystemChatMessage("You are a travel expert. Refine the itinerary based on user feedback. Respond with a complete updated itinerary in JSON format."),
-                new UserChatMessage($"Current itinerary:\n{JsonSerializer.Serialize(existing)}\n\nFeedback: {feedback}")
-            ],
-            new ChatCompletionOptions { Temperature = 0.5f, MaxOutputTokenCount = 4096, ResponseFormat = ChatResponseFormat.CreateJsonObjectFormat() },
+        var json = await _provider.GenerateAsync(
+            "You are a travel expert. Refine the itinerary based on user feedback. Respond with a complete updated itinerary in JSON format.",
+            $"Current itinerary:\n{JsonSerializer.Serialize(existing)}\n\nFeedback: {feedback}",
             cancellationToken);
-
-        return ParseItineraryResponse(response.Value.Content[0].Text, existing.Traveller, existing.Destination, existing.DepartureDate, existing.ReturnDate);
+        return ParseItineraryResponse(json, existing.Traveller, existing.Destination, existing.DepartureDate, existing.ReturnDate);
     }
 
     private static string BuildSystemPrompt(TravellerProfile traveller) => $"""

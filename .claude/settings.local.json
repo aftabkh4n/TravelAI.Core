@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet script *)",
+      "Bash(dotnet-ilspycmd Anthropic.SDK.dll --type Anthropic.SDK.Messaging.SystemMessage)",
+      "Bash(ilspycmd Anthropic.SDK.dll --type Anthropic.SDK.Messaging.SystemMessage)",
+      "Bash(dotnet run *)",
+      "PowerShell(dotnet run *)"
+    ]
+  }
+}
