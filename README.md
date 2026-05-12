@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple)](https://dotnet.microsoft.com)
 
-A .NET 10 library for building AI-native travel platforms. Supports OpenAI, Anthropic, Ollama, and Azure OpenAI out of the box — swap providers without changing any application code. Deployed to Azure Kubernetes Service with GitHub Actions CI/CD.
+A .NET 10 library for building AI-native travel platforms. Supports OpenAI, Anthropic, Ollama, and Azure OpenAI out of the box - swap providers without changing any application code. Deployed to Azure Kubernetes Service with GitHub Actions CI/CD.
 
 ---
 
@@ -21,7 +21,7 @@ dotnet add package TravelAI.Core
 
 ## Quick start
 
-### Zero credentials — try it instantly
+### Zero credentials - try it instantly
 
 ```csharp
 builder.Services.AddTravelAI(options => options.UseMock());
@@ -43,7 +43,7 @@ builder.Services.AddTravelAI(options =>
     options.UseAnthropic("sk-ant-..."));
 ```
 
-### Ollama — free and local
+### Ollama - free and local
 
 ```csharp
 builder.Services.AddTravelAI(options =>
@@ -69,7 +69,7 @@ The `IItineraryGenerationService`, `IPriceAnomalyDetector`, and `IDestinationSea
 | Service | Description |
 |---|---|
 | `IItineraryGenerationService` | Generates day-by-day itineraries with cost estimates, tailored to the traveller's preferences and tier |
-| `IPriceAnomalyDetector` | Flags flight price anomalies — surges, unexpected deals, seasonal deviations — using statistical analysis against historical baselines |
+| `IPriceAnomalyDetector` | Flags flight price anomalies - surges, unexpected deals, seasonal deviations - using statistical analysis against historical baselines |
 | `IDestinationSearchService` | Semantic search over destinations. Understands queries like *"warm with beaches and good food, not too touristy"* |
 | `IBookingAutomationService` | Orchestrates end-to-end bookings with retry logic, partial booking handling, and automatic rollback on failure |
 
@@ -116,14 +116,14 @@ Console.WriteLine(result.BookingReference);
 TravelAI.Core
 ├── Interfaces/       # IItineraryGenerationService, IPriceAnomalyDetector, ...
 ├── Models/           # Itinerary, FlightOption, PriceAnomaly, BookingResult, ...
-├── Providers/        # ILlmProvider — OpenAI, Anthropic, Ollama, AzureOpenAI, Mock
+├── Providers/        # ILlmProvider - OpenAI, Anthropic, Ollama, AzureOpenAI, Mock
 ├── Services/         # Provider-agnostic service implementations
 ├── Middleware/       # Observability (correlation IDs, structured logging) + rate limiting
 ├── HealthChecks/     # Azure OpenAI and AI Search health probes
 └── Extensions/       # AddTravelAI() DI registration with fluent provider config
 
 samples/TravelAI.Api  # Full ASP.NET Core 10 minimal API
-tests/                # xUnit + FluentAssertions — unit and integration tests
+tests/                # xUnit + FluentAssertions - unit and integration tests
 deploy/               # Dockerfile, Kubernetes manifests, GitHub Actions CI/CD
 ```
 
@@ -179,17 +179,17 @@ See [`deploy/DEPLOYMENT.md`](deploy/DEPLOYMENT.md) for the full guide.
 dotnet test --configuration Release
 ```
 
-Tests cover the price anomaly detector, booking orchestration, mock provider, domain model validation, and API integration tests via `WebApplicationFactory`. No Azure credentials needed — the mock provider and test doubles handle everything.
+Tests cover the price anomaly detector, booking orchestration, mock provider, domain model validation, and API integration tests via `WebApplicationFactory`. No Azure credentials needed - the mock provider and test doubles handle everything.
 
 ---
 
 ## What's new in v2.0.0
 
-- Multi-provider support — OpenAI, Anthropic (Claude), Ollama, Azure OpenAI
-- Mock provider — works with zero credentials, perfect for local development
-- Fluent configuration API — `options.UseOpenAI(...)` replaces config sections
+- Multi-provider support - OpenAI, Anthropic (Claude), Ollama, Azure OpenAI
+- Mock provider - works with zero credentials, perfect for local development
+- Fluent configuration API - `options.UseOpenAI(...)` replaces config sections
 - Provider-agnostic destination search with mock search included
-- All existing interfaces unchanged — drop-in upgrade from v1.0.0
+- All existing interfaces unchanged - drop-in upgrade from v1.0.0
 
 ---
 
