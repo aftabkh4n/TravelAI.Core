@@ -7,22 +7,25 @@
     <LangVersion>latest</LangVersion>
 
     <PackageId>TravelAI.Core</PackageId>
-    <Version>2.0.0</Version>
-    <Authors>YourName</Authors>
-    <Description>A .NET library for building AI-powered travel platforms. Includes intelligent itinerary generation, anomaly detection for pricing, semantic search, and Azure-integrated booking automation.</Description>
-    <PackageTags>travel;ai;dotnet;azure;openai;itinerary;booking;ml</PackageTags>
+    <Version>2.0.1</Version>
+    <Authors>Aftab Khan</Authors>
+    <Description>A .NET library for building AI-powered travel platforms. Supports OpenAI, Anthropic, Ollama, and Azure OpenAI. Includes itinerary generation, price anomaly detection, semantic destination search, and booking automation.</Description>
+    <PackageTags>travel;ai;dotnet;azure;openai;anthropic;ollama;itinerary;booking;kubernetes</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/yourusername/TravelAI.Core</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/yourusername/TravelAI.Core</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/aftabkh4n/TravelAI.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/aftabkh4n/TravelAI.Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
