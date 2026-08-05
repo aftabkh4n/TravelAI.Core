@@ -5,7 +5,7 @@
   },
   "projects": {
     "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "restore": {
         "projectUniqueName": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj",
         "projectName": "TravelAI.Core",
@@ -112,7 +112,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

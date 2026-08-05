@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj": {}
+    "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj": {
+    "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj",
+        "projectUniqueName": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj",
         "projectName": "TravelAI.Api",
-        "projectPath": "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj",
+        "projectPath": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\TravelAI.Api.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\obj\\",
+        "outputPath": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\samples\\TravelAI.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj"
+              "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj": {
+                "projectPath": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj"
               }
             }
           }
@@ -107,7 +107,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -525,14 +525,14 @@
         }
       }
     },
-    "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj": {
-      "version": "1.0.0",
+    "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj": {
+      "version": "2.0.1",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj",
+        "projectUniqueName": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj",
         "projectName": "TravelAI.Core",
-        "projectPath": "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj",
+        "projectPath": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\TravelAI.Core.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\Downloads\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\obj\\",
+        "outputPath": "D:\\Projects\\TravelAI.Core\\TravelAI.Core\\src\\TravelAI.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -572,6 +572,10 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Anthropic.SDK": {
+              "target": "Package",
+              "version": "[5.*, )"
+            },
             "Azure.AI.OpenAI": {
               "target": "Package",
               "version": "[2.*, )"
@@ -596,6 +600,10 @@
               "target": "Package",
               "version": "[10.*, )"
             },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[10.*, )"
+            },
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
               "version": "[10.*, )"
@@ -603,6 +611,10 @@
             "Microsoft.Extensions.Options": {
               "target": "Package",
               "version": "[10.*, )"
+            },
+            "OpenAI": {
+              "target": "Package",
+              "version": "[2.*, )"
             }
           },
           "imports": [
@@ -621,7 +633,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

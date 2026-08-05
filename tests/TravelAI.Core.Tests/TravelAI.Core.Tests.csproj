@@ -16,6 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\TravelAI.Core\TravelAI.Core.csproj" />
-    <ProjectReference Include="..\..\samples\TravelAI.Api\TravelAI.Api.csproj" />
+    <ProjectReference Include="..\..\src\TravelAI.Api\TravelAI.Api.csproj" />
   </ItemGroup>
 </Project>

@@ -20,7 +20,7 @@ services:
   travelai-api:
     build:
       context: .
-      dockerfile: samples/TravelAI.Api/Dockerfile
+      dockerfile: src/TravelAI.Api/Dockerfile
     container_name: travelai-api
     ports:
       - "5000:8080"

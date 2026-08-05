@@ -12,7 +12,10 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddSerilog((ctx, cfg) =>
     cfg.ReadFrom.Configuration(builder.Configuration)
        .WriteTo.Console(outputTemplate:
-           "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}"));
+           "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}")
+       .WriteTo.File("logs/travelai-search-.log",
+           rollingInterval: RollingInterval.Day,
+           outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}"));
 
 // Register TravelAI.Core services
 builder.Services.AddTravelAI(builder.Configuration);

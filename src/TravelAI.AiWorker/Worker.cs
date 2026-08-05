@@ -54,7 +54,7 @@ public class ItineraryRequestedConsumer(
 
             await context.Publish(new ItineraryGenerated(
                 msg.CorrelationId,
-                new object(),
+                null!,
                 Success: false,
                 ErrorMessage: ex.Message));
 

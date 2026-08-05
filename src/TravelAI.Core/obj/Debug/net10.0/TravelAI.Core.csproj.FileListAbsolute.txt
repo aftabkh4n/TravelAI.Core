@@ -24,3 +24,5 @@ D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\bin\Debug\net10.0\Trav
 D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\bin\Debug\net10.0\TravelAI.Core.dll
 D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\bin\Debug\net10.0\TravelAI.Core.pdb
 D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\ref\TravelAI.Core.dll
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\bin\Debug\net10.0\TravelAI.Core.xml
+D:\Projects\TravelAI.Core\TravelAI.Core\src\TravelAI.Core\obj\Debug\net10.0\TravelAI.Core.xml

@@ -5,7 +5,14 @@
       "Bash(dotnet-ilspycmd Anthropic.SDK.dll --type Anthropic.SDK.Messaging.SystemMessage)",
       "Bash(ilspycmd Anthropic.SDK.dll --type Anthropic.SDK.Messaging.SystemMessage)",
       "Bash(dotnet run *)",
-      "PowerShell(dotnet run *)"
+      "PowerShell(dotnet run *)",
+      "Read(//d/Projects/order-pipeline/**)",
+      "Bash(dotnet build *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Projects\\\\TravelAI.Core\\\\TravelAI.Core\" -Recurse -Depth 3)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(ConvertTo-Json -Depth 2)",
+      "Bash(Test-Path *)",
+      "Bash(dotnet restore *)"
     ]
   }
 }
